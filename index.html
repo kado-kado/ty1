@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #game-area {
+      width: 300px;
+      height: 300px;
+      background-color: #eee;
+    }
+
+    #target-word {
+      color: black;
+      font-size: 24px;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    #input-text {
+      width: 100%;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #timer {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    #score {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-area">
+    <div id="target-word"></div>
+    <input type="text" id="input-text" />
+    <div id="timer"></div>
+    <div id="score"></div>
+  </div>
+
+  <script>
+    var targetWord = document.getElementById("target-word");
+    var inputText = document.getElementById("input-text");
+    var timerElement = document.getElementById("timer");
+    var scoreElement = document.getElementById("score");
+
+    var words = [
+      "猿も木から落ちる",
+      "花より団子",
+      "一石二鳥",
+      "二度あることは三度ある",
+      "井の中の蛙大海を知らず",
+      "蛇の道は蛇",
+      "石の上にも三年",
+      "犬も歩けば棒に当たる",
+      "虎穴に入らずんば虎子を得ず",
+      "出る杭は打たれる"
+    ];
+
+    var currentIndex = 0;
+    var startTime;
+    var endTime;
+    var timer;
+    var score = 0;
+
+    function displayTargetWord() {
+      targetWord.textContent = words[currentIndex];
+    }
+
+    function startTimer() {
+      startTime = new Date();
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      var currentTime = new Date();
+      var elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      var remainingTime = 60 - elapsedTime;
+
+      if (remainingTime >= 0) {
+        timerElement.textContent = "Time: " + remainingTime + "s";
+      } else {
+        clearInterval(timer);
+        timerElement.textContent = "Time's up!";
+        inputText.disabled = true;
+        scoreElement.textContent = "Final Score: " + score;
+      }
+    }
+
+    function checkInput(event) {
+      var input = event.target.value;
+      if (input === targetWord.textContent) {
+        score += input.length;
+        currentIndex++;
+        event.target.value = "";
+        if (currentIndex >= words.length) {
+          currentIndex = 0;
+        }
+        displayTargetWord();
+      }
+    }
+
+    inputText.addEventListener("input", checkInput);
+
+    displayTargetWord();
+    startTimer();
+  </script>
+</body>
+</html>
