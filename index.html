@@ -2,10 +2,22 @@
 <html>
 <head>
   <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
     #game-area {
       width: 300px;
       height: 300px;
       background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
 
     #target-word {
@@ -33,6 +45,15 @@
       font-size: 20px;
       margin-top: 20px;
     }
+
+    #start-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -41,6 +62,7 @@
     <input type="text" id="input-text" />
     <div id="timer"></div>
     <div id="score"></div>
+    <button id="start-button">Start</button>
   </div>
 
   <script>
@@ -48,6 +70,7 @@
     var inputText = document.getElementById("input-text");
     var timerElement = document.getElementById("timer");
     var scoreElement = document.getElementById("score");
+    var startButton = document.getElementById("start-button");
 
     var words = [
       "猿も木から落ちる",
@@ -70,6 +93,17 @@
 
     function displayTargetWord() {
       targetWord.textContent = words[currentIndex];
+    }
+
+    function startGame() {
+      currentIndex = 0;
+      score = 0;
+      displayTargetWord();
+      startTimer();
+      inputText.disabled = false;
+      scoreElement.textContent = "Score: 0";
+      inputText.value = "";
+      inputText.focus();
     }
 
     function startTimer() {
